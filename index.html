@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untuk Kamu yang Tersayang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffe6f7 0%, #b5ead7 100%);
+      margin: 0;
+      padding: 0;
+      color: #444;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .love-anim {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.7rem;
+      color: #ff69b4;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 8px #fff6, 0 2px 0 #fff;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #ff69b4;
+      margin-top: 0;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px #fff8;
+    }
+    section {
+      background: rgba(255,255,255,0.95);
+      margin: 2rem auto;
+      border-radius: 24px;
+      max-width: 700px;
+      box-shadow: 0 4px 24px rgba(255,105,180,0.10);
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    h2 {
+      color: #ff69b4;
+      font-family: 'Pacifico', cursive;
+      margin-top: 0;
+      font-size: 2rem;
+      text-shadow: 1px 1px 6px #fff8;
+    }
+    /* Galeri Foto */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .gallery img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px #ffb6c1aa;
+      border: 3px dashed #ffb6c1;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+    .gallery img:hover {
+      transform: scale(1.08) rotate(-4deg);
+      box-shadow: 0 6px 16px #ff69b4aa;
+      border-color: #ff69b4;
+    }
+    /* Surat Cinta */
+    .love-letter {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      background: #fff0f6;
+      border-left: 6px solid #ff69b4;
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      position: relative;
+    }
+    .love-letter:before {
+      content: '💌';
+      position: absolute;
+      left: -2.2rem;
+      top: 0.7rem;
+      font-size: 2rem;
+    }
+    /* Playlist Lagu */
+    .playlist {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .playlist iframe {
+      border-radius: 12px;
+      border: 2px solid #ffb6c1;
+      width: 100%;
+      min-height: 80px;
+      background: #fff;
+      box-shadow: 0 2px 8px #ffb6c1aa;
+    }
+    /* Countdown */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 1.5rem;
+      color: #ff69b4;
+      font-weight: bold;
+      margin-top: 1rem;
+      text-shadow: 1px 1px 6px #fff8;
+    }
+    @media (max-width: 600px) {
+      section { padding: 1rem; }
+      .gallery img { width: 80px; height: 80px; }
+      .countdown { font-size: 1.1rem; gap: 1rem; }
+    }
+    /* Pesan Happy Anniversary di tengah */
+    .anniv-popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 10000;
+      background: rgba(255,255,255,0.0);
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+    .anniv-popup.show {
+      display: flex;
+      animation: fadeInZoom 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    .anniv-popup h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      color: #ff4f81;
+      text-shadow:
+        0 2px 12px #fff8,
+        0 0 32px #e62300,
+        0 2px 0 #ff008c;
+      background: linear-gradient(90deg, #fffbe7 10%, #ffe082 40%, #ffd700 70%, #fffbe7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 24px #fff6);
+      margin: 0;
+      padding: 0 1rem;
+      letter-spacing: 2px;
+      pointer-events: none;
+      animation: bounceWobble 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+    }
+    @keyframes bounceWobble {
+      0%   { transform: scale(1)   translateX(0); }
+      10%  { transform: scale(1.08,0.92) translateX(-6px); }
+      20%  { transform: scale(0.95,1.05) translateX(6px); }
+      30%  { transform: scale(1.05,0.95) translateX(-4px); }
+      40%  { transform: scale(0.98,1.02) translateX(4px); }
+      50%  { transform: scale(1.02,0.98) translateX(0); }
+      60%  { transform: scale(1.05,0.95) translateX(3px); }
+      70%  { transform: scale(0.97,1.03) translateX(-3px); }
+      80%  { transform: scale(1.03,0.97) translateX(2px); }
+      90%  { transform: scale(0.99,1.01) translateX(-2px); }
+      100% { transform: scale(1)   translateX(0); }
+    }
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.7); }
+      60% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    /* Lightbox foto galeri */
+    .lightbox-bg {
+      display: none;
+      position: fixed;
+      z-index: 20000;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.45);
+      justify-content: center;
+      align-items: center;
+      animation: fadeInBg 0.3s;
+    }
+    .lightbox-bg.show {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 80vw;
+      max-height: 80vh;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px #0006;
+      background: #fff;
+      animation: bounceIn 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+      position: relative;
+      z-index: 20001;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -32px; right: -32px;
+      background: #fff;
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      font-size: 2rem;
+      color: #ff69b4;
+      border: 2px solid #ffb6c1;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #ffb6c1aa;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 20002;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: #ffb6c1;
+      color: #fff;
+    }
+    @keyframes fadeInBg {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    /* Confetti mini untuk lightbox */
+    .mini-confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 21000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+    }
+    /* Dekorasi galeri */
+    .gallery-decoration {
+      position: relative;
+      width: 100%;
+      height: 0;
+    }
+    .deco {
+      position: absolute;
+      font-size: 2.2rem;
+      opacity: 0.85;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 2px 8px #ffb6c1aa);
+      animation: decoFloat 3.5s ease-in-out infinite alternate;
+    }
+    .deco-love1 { left: -18px; top: -18px; color: #ff69b4; animation-delay: 0s; }
+    .deco-star1 { right: -18px; top: -18px; color: #ffe082; animation-delay: 1s; }
+    .deco-love2 { left: -18px; bottom: -18px; color: #ffb6c1; animation-delay: 2s; }
+    .deco-star2 { right: -18px; bottom: -18px; color: #ffd700; animation-delay: 1.5s; }
+    @keyframes decoFloat {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-12px) scale(1.12) rotate(-8deg); }
+    }
+    .gallery-decoration-bottom {
+      position: relative;
+      width: 100%;
+      height: 0;
+      margin-top: 12px;
+    }
+    .deco-star1 { left: -18px; bottom: -18px; color: #ffe082; animation-delay: 1s; }
+    .deco-star2 { right: -18px; bottom: -18px; color: #ffd700; animation-delay: 1.5s; }
+    .deco-love1 { left: -18px; top: -18px; color: #ff69b4; animation-delay: 0s; }
+    .deco-love2 { right: -18px; top: -18px; color: #ffb6c1; animation-delay: 2s; }
+  </style>
+</head>
+<body>
+  <canvas class="love-anim"></canvas>
+  <header>
+    <h1>Untuk Kamu yang Tersayang</h1>
+    <p>Website ini aku buat khusus untuk kamu, yang selalu ada di hatiku 💖</p>
+  </header>
+
+  <section>
+    <h2>Galeri Kenangan Kita</h2>
+    <div class="gallery-decoration">
+      <span class="deco deco-love deco-love1">❤</span>
+      <span class="deco deco-love deco-love2">💖</span>
+    </div>
+    <div class="gallery">
+      <img src="WhatsApp Image 2025-06-03 at 00.32.42_62117073.jpg" alt="Foto 1">
+      <img src="WhatsApp Image 2025-06-03 at 00.32.42_a3deff94.jpg" alt="Foto 2">
+      <img src="WhatsApp Image 2025-06-03 at 00.32.43_01d34c74.jpg" alt="Foto 3">
+      <img src="WhatsApp Image 2025-06-03 at 00.32.44_07ad7a4e.jpg" alt="Foto 4">
+    </div>
+    <div class="gallery-decoration gallery-decoration-bottom">
+      <span class="deco deco-star deco-star1">★</span>
+      <span class="deco deco-star deco-star2">✨</span>
+    </div>
+    <p style="text-align:center; font-size:0.95rem; color:#888; margin-top:0.5rem;"></p>
+  </section>
+
+  <section>
+    <h2>Surat Cinta Untukmu</h2>
+    <div class="love-letter">
+      Sayangku, terima kasih sudah selalu ada untukku. Setiap hari bersamamu adalah anugerah yang indah. Semoga kita selalu bersama, saling mendukung, dan saling mencintai. Aku sayang kamu, hari ini, besok, dan selamanya. 💌
+    </div>
+    <p style="text-align:center; font-size:0.95rem; color:#888;"></p>
+  </section>
+
+  <section>
+    <h2>Playlist Lagu Kita</h2>
+    <div class="playlist">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5WOSNVChcadlsCRiqXE45K?si=76f46ee2a65f41d6" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1ctbkptXLNIoEVTNAFYV4d?si=d644609723b54ee8" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+    </div>
+    <p style="text-align:center; font-size:0.95rem; color:#888;"></p>
+  </section>
+
+  <section>
+    <h2>Hitung Mundur Anniversary</h2>
+    <div id="countdown" class="countdown"></div>
+    <p style="text-align:center; font-size:0.95rem; color:#888;"></p>
+  </section>
+
+  <div class="anniv-popup" id="annivPopup">
+    <h1>Happy Anniversary Sayang! ��</h1>
+  </div>
+
+  <div class="lightbox-bg" id="lightboxBg">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img src="" alt="Preview" class="lightbox-img" id="lightboxImg">
+    <canvas class="mini-confetti" id="miniConfetti"></canvas>
+  </div>
+
+  <script>
+    // Ganti tanggal anniversary di sini (format: YYYY-MM-DD)
+    const anniversaryDate = new Date(new Date().getFullYear(), 7, 1, 0, 0, 0, 0);
+    let confettiActive = false;
+    let confettiParticles = [];
+    function startConfetti() {
+      confettiActive = true;
+      confettiParticles = [];
+      for (let i = 0; i < 300; i++) {
+        confettiParticles.push({
+          x: Math.random() * canvas.width,
+          y: canvas.height + 10,
+          r: 10 + Math.random() * 16,
+          d: Math.random() * 360,
+          color: randomColor(),
+          tilt: Math.random() * 20 - 10,
+          tiltAngle: 0,
+          speed: 3 + Math.random() * 4,
+        });
+      }
+      setTimeout(() => { confettiActive = false; }, 10000);
+    }
+    function drawConfetti() {
+      for (let p of confettiParticles) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = 0.85;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    function updateConfetti() {
+      for (let p of confettiParticles) {
+        p.y -= p.speed;
+        p.x += Math.sin(p.d) * 2;
+        p.tiltAngle += 0.07;
+        p.d += 0.02;
+        p.x += Math.sin(p.tiltAngle) * 1.5;
+      }
+    }
+    // --- Firework (petasan) burst effect ---
+    let fireworks = [];
+    function startFireworkBurst() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => createFirework(), i * 500);
+      }
+    }
+    function createFirework() {
+      const cx = Math.random() * canvas.width * 0.7 + canvas.width * 0.15;
+      const cy = Math.random() * canvas.height * 0.4 + canvas.height * 0.2;
+      const color = randomColor();
+      let particles = [];
+      const count = 36 + Math.floor(Math.random() * 18);
+      for (let i = 0; i < count; i++) {
+        const angle = (2 * Math.PI * i) / count;
+        const speed = 2.5 + Math.random() * 2.5;
+        particles.push({
+          x: cx,
+          y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color: color,
+          size: 6 + Math.random() * 6
+        });
+      }
+      fireworks.push({particles});
+    }
+    function drawFireworks() {
+      for (let fw of fireworks) {
+        for (let p of fw.particles) {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+    }
+    function updateFireworks() {
+      for (let fw of fireworks) {
+        for (let p of fw.particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.97;
+          p.vy *= 0.97;
+          p.alpha -= 0.012 + Math.random() * 0.01;
+        }
+      }
+      fireworks = fireworks.filter(fw => fw.particles.some(p => p.alpha > 0));
+    }
+    function updateCountdown() {
+      const now = new Date();
+      const diff = anniversaryDate - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = '';
+        const popup = document.getElementById('annivPopup');
+        if (popup && !popup.classList.contains('show')) {
+          popup.classList.add('show');
+        }
+        if (fireworks.length === 0) startFireworkBurst();
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      document.getElementById('countdown').innerHTML =
+        `<div><span>${days}</span> hari</div>` +
+        `<div><span>${hours}</span> jam</div>` +
+        `<div><span>${minutes}</span> menit</div>` +
+        `<div><span>${seconds}</span> detik</div>`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Inisialisasi canvas dan context untuk firework
+    const canvas = document.querySelector('.love-anim');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    function randomColor() {
+      // Warna-warni kembang api
+      const colors = [
+        '#ffec70', // kuning
+        '#ff5e62', // merah
+        '#4fd1ff', // biru
+        '#7fff7f', // hijau
+        '#ff7ff7', // ungu muda
+        '#fff',    // putih
+        '#ffb347', // oranye
+        '#b366ff', // ungu
+        '#ff4f81', // pink tua
+        '#00e6e6', // cyan
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateFireworks();
+      drawFireworks();
+      requestAnimationFrame(animateFireworks);
+    }
+    animateFireworks();
+
+    // Lightbox foto galeri dengan efek lucu
+    const galleryImgs = document.querySelectorAll('.gallery img');
+    const lightboxBg = document.getElementById('lightboxBg');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const miniConfetti = document.getElementById('miniConfetti');
+    let miniCtx = miniConfetti.getContext('2d');
+    function resizeMiniConfetti() {
+      miniConfetti.width = window.innerWidth;
+      miniConfetti.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeMiniConfetti);
+    resizeMiniConfetti();
+    let miniParticles = [];
+    function showMiniConfetti() {
+      miniParticles = [];
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * 2 * Math.PI;
+        const speed = 3 + Math.random() * 3;
+        miniParticles.push({
+          x: window.innerWidth/2,
+          y: window.innerHeight/2,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          r: 8 + Math.random() * 8,
+          color: randomColor(),
+          alpha: 1
+        });
+      }
+      animateMiniConfetti();
+    }
+    function animateMiniConfetti() {
+      miniCtx.clearRect(0, 0, miniConfetti.width, miniConfetti.height);
+      for (let p of miniParticles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.15;
+        p.alpha -= 0.018;
+        miniCtx.save();
+        miniCtx.globalAlpha = Math.max(0, p.alpha);
+        miniCtx.beginPath();
+        miniCtx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        miniCtx.fillStyle = p.color;
+        miniCtx.fill();
+        miniCtx.restore();
+      }
+      miniParticles = miniParticles.filter(p => p.alpha > 0);
+      if (miniParticles.length > 0) requestAnimationFrame(animateMiniConfetti);
+    }
+    galleryImgs.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxBg.classList.add('show');
+        showMiniConfetti();
+      });
+    });
+    lightboxClose.addEventListener('click', () => {
+      lightboxBg.classList.remove('show');
+      lightboxImg.src = '';
+      miniCtx.clearRect(0, 0, miniConfetti.width, miniConfetti.height);
+    });
+    lightboxBg.addEventListener('click', (e) => {
+      if (e.target === lightboxBg) {
+        lightboxBg.classList.remove('show');
+        lightboxImg.src = '';
+        miniCtx.clearRect(0, 0, miniConfetti.width, miniConfetti.height);
+      }
+    });
+  </script>
+</body>
+</html> 
